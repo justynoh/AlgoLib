@@ -5,7 +5,7 @@
 
 open Core
 
-module Bubblesort : SORT = struct
+module BubbleSort : SORT = struct
 
   (* Scans through the list once, looking at each pair of elements. If the
    * elements are in the wrong order, swap them, then continue the scan. Also
