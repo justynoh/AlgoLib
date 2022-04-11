@@ -5,7 +5,9 @@
 
 open Core
 
-module MergeSort : SORT = struct
+module MergeSort (Ord : ORDTY) : (SORT with type elt = Ord.t) = struct
+
+  type elt = Ord.t
 
   (* Merges two sorted lists into a single sorted list.
    *)
@@ -13,7 +15,7 @@ module MergeSort : SORT = struct
     match (l1,l2) with
     | ([],_) -> l2
     | (_,[]) -> l1
-    | (x::xs, y::ys) -> if x < y then x::(merge xs l2) else y::(merge l1 ys)
+    | (x::xs, y::ys) -> if Ord.compare x y = -1 then x::(merge xs l2) else y::(merge l1 ys)
 
   (* Splits l into two lists (l1,l2) of equal size such that l is a permutation
    * of l1 @ l2.

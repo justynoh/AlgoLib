@@ -5,7 +5,9 @@
 
 open Core
 
-module BubbleSort : SORT = struct
+module BubbleSort (Ord : ORDTY) : (SORT with type elt = Ord.t) = struct
+
+  type elt = Ord.t
 
   (* Scans through the list once, looking at each pair of elements. If the
    * elements are in the wrong order, swap them, then continue the scan. Also
@@ -13,7 +15,7 @@ module BubbleSort : SORT = struct
    *)
   let rec bubble_onepass = function
     | x::y::xs ->
-      if x > y
+      if Ord.compare x y = 1
       then let (xxs,_) = bubble_onepass (x::xs) in (y::xxs, true)
       else let (yxs,swap) = bubble_onepass (y::xs) in (x::yxs, swap)
     | xs -> (xs, false)

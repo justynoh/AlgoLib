@@ -6,7 +6,9 @@
 
 open Core
 
-module QuickSort : SORT = struct
+module QuickSort (Ord : ORDTY) : (SORT with type elt = Ord.t) = struct
+
+  type elt = Ord.t
 
   (* Pick a random pivot and split the list about the pivot. Then, recursively
    * sort the two halves. Requires |l| = n.
@@ -22,7 +24,7 @@ module QuickSort : SORT = struct
         ~init:([],0,[],0)
         ~f:(fun i (lt,ltn,gt,gtn) x ->
           if i = pivotidx then (lt,ltn,gt,gtn) else (* Ignore the pivot. *)
-          if x < pivot then (x::lt,ltn+1,gt,gtn) else (lt,ltn,x::gt,gtn+1))
+          if Ord.compare x pivot = -1 then (x::lt,ltn+1,gt,gtn) else (lt,ltn,x::gt,gtn+1))
         l in
       (quicksort lt ltn) @ pivot :: (quicksort gt gtn)
       )
